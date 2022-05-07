@@ -12,6 +12,7 @@ cd netbox-docker
 
 tee plugin_requirements.txt <<EOF
 netbox-bgp
+netbox-topology-views
 EOF
 
 tee Dockerfile-Plugins <<EOF
@@ -40,11 +41,15 @@ services:
 EOF
 
 tee -a configuration/configuration.py <<EOF
-PLUGINS = ["netbox_bgp"]
+PLUGINS = ["netbox_bgp", "netbox_topology_views"]
 
 PLUGINS_CONFIG = {
   "netbox_bgp": {
     "asdot": False
+  },
+  "netbox_topology_views": {
+    "device_img": ["router", "firewall", "switch"],
+    "preselected_device_roles": ["Router", "Firewall", "L2SW"]
   }
 }
 EOF
